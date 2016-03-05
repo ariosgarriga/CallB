@@ -1,5 +1,5 @@
 <ion-view view-title="CallBOB">
-  <ion-content>
+  <ion-content  style="background:url('img/fondo.png');">
     <div class="list list-inset">
       <div class="item item-divider">Descripcion</div>
       <label class="item item-input">
@@ -11,9 +11,7 @@
           Categoria
         </div>
         <select>
-          <option>Computacion</option>
-          <option>Jardineria</option>
-          <option>Cocina</option>
+          <option ng-repeat="cat in cats">{{ cat.lg }}</option>
         </select>
       </label>
       <label class="item item-input item-select">
@@ -21,9 +19,7 @@
           Subcategoria
         </div>
         <select>
-          <option>Blue</option>
-          <option>Green</option>
-          <option>Red</option>
+            <option ng-repeat="sub in subs">{{ sub.nm }}</option>
         </select>
       </label>
       <label class="item item-input">
