@@ -46,8 +46,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     })
     .state('registrarse', {
         url: '/registrarse',
-        templateUrl: 'templates/registrarse.html'
-
+        templateUrl: 'templates/registrarse.html',
+        controller: 'RegisterCtrl'
       })
 
   .state('tab.dash', {

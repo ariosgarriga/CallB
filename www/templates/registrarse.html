@@ -16,10 +16,26 @@
       <label class="item item-input">
         <input type="password" placeholder="Repetir Password">
       </label>
+      <label class="item item-input">
+       <input type="date" placeholder="Fecha Nacimiento">
+      </label>
+      <label class="item item-input">
+        <input type="text" placeholder="telefono">
+      </label>
+      <ion-toggle  ng-model="settings">
+         BOB
+      </ion-toggle>
+
     </div>
+
+    <div>
+      {{ ejemplo }}
+    </div>
+
     <button class="button button-full button-balanced" ui-sref="tab.dash">
       Registrarse
     </button>
+
 
   </ion-content>
 </ion-view>
