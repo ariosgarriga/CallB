@@ -1,18 +1,22 @@
 <ion-view view-title="Login" >
-  <ion-content class="padding">
+  <ion-content class="padding" style="background: url('img/fondo.png');">
     <div class="list list-inset">
       <label class="item item-input">
-        <input type="email" placeholder="email@correo">
+        <input type="email" placeholder="email@correo" ng-model="Correo">
       </label>
       <label class="item item-input">
-        <input type="password" placeholder="Password">
+        <input type="password" placeholder="Password" ng-model="contra">
       </label>
     </div>
-    <button class="button button-full button-balanced" ui-sref="tab.dash">
+    <button class="button button-full button-balanced" ui-sref="tab.dash"
+    ng-click="validar(Correo, contra)">
       Iniciar Sesion
     </button>
-    <button class="button button-clear button-balanced" ui-sref="registrarse">
+    <button class="button button-clear button-energized" ui-sref="registrarse">
       Registrarse
+    </button>
+    <button class="button button-full button-royal" ui-sref="tabBob.dash">
+      Iniciar Sesion como BOB
     </button>
   </ion-content>
 </ion-view>

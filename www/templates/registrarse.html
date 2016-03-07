@@ -2,37 +2,34 @@
   <ion-content class="padding">
     <div class="list list-inset">
       <label class="item item-input">
-        <input type="text" placeholder="Nombre">
+        <input type="text" placeholder="Nombre" ng-model="Nombre">
       </label>
       <label class="item item-input">
-        <input type="text" placeholder="Apellido">
+        <input type="text" placeholder="Apellido" ng-model="Apellido">
       </label>
       <label class="item item-input">
-        <input type="email" placeholder="email@correo">
+        <input type="email" placeholder="email@correo" ng-model="Correo">
       </label>
       <label class="item item-input">
-        <input type="password" placeholder="Password">
+        <input type="password" placeholder="Password" ng-model="contra">
       </label>
       <label class="item item-input">
-        <input type="password" placeholder="Repetir Password">
+        <input type="password" placeholder="Repetir Password" ng-model="rcontra">
       </label>
       <label class="item item-input">
-       <input type="date" placeholder="Fecha Nacimiento">
+       <input type="date" placeholder="Fecha Nacimiento" ng-model="fnac">
       </label>
       <label class="item item-input">
-        <input type="text" placeholder="telefono">
+        <input type="text" placeholder="telefono" ng-model="Telefono">
       </label>
-      <ion-toggle  ng-model="settings">
+      <ion-toggle  ng-model="bobtoggle">
          BOB
       </ion-toggle>
 
-    </div>
+      <div>{{ error }}</div>
 
-    <div>
-      {{ ejemplo }}
-    </div>
-
-    <button class="button button-full button-balanced" ui-sref="tab.dash">
+    <button class="button button-full button-balanced" ui-sref="tab.dash" ng-click=
+    "registrar(Nombre, Apellido,Correo, contra, rcontra, fnac, Telefono, bobtoggle)">
       Registrarse
     </button>
 

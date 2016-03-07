@@ -41,8 +41,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   // Each tab has its own nav history stack:
   .state('login', {
       url: '/login',
-      templateUrl: 'templates/login.html'
-
+      templateUrl: 'templates/login.html',
+      controller: 'LoginCtrl'
     })
     .state('registrarse', {
         url: '/registrarse',
@@ -79,7 +79,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         controller: 'AccountCtrl'
       }
     }
-  });
+  })
+
+  .state('tab.trabajos', {
+    url: '/trabajos',
+    views: {
+      'tab-trabajos': {
+        templateUrl: 'templates/trabajos.html',
+        controller: 'TrabajosCtrl'
+      }
+    }
+  })
+
+  ;
 
 
   // if none of the above states are matched, use this as the fallback
