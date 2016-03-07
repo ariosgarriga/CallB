@@ -29,26 +29,56 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('AccountCtrl', function($scope, $http) {
-  $http.get('http://callbob.netau.net/prueba3.json').then(function(resp) {
-    console.log('Success', resp);
+.controller('AccountCtrl', function($scope, $http, $state, $cordovaGeolocation) {
+  $http.get('https://api.backand.com:443/1/objects/usuarios/1').then(function(resp) {
+    console.log('Success backand', resp);
     // For JSON responses, resp.data contains the result
-  //  $scope.usuario=resp.data;
+    $scope.usuario=resp.data;
+    console.log(resp.data.data.id);
 
 
   }, function(err) {
     console.error('ERR', err);
     // err.status will contain the status code
 
-  });
-  $scope.usuario =
-    {
-      "Nombre":"Andres",
-      "Apellido":"Rios",
-      "Correo":"ariosgarriga@gmail.com",
-      "Telefono":"04122551616"
-    }
+  })
 
+
+    var options = {timeout: 10000, enableHighAccuracy: true};
+
+  $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+
+    var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+    var mapOptions = {
+      center: latLng,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+    google.maps.event.addListenerOnce($scope.map, 'idle', function(){
+
+      var marker = new google.maps.Marker({
+          map: $scope.map,
+          animation: google.maps.Animation.DROP,
+          position: latLng
+      });
+
+      var infoWindow = new google.maps.InfoWindow({
+          content: "Here I am!"
+      });
+
+      google.maps.event.addListener(marker, 'click', function () {
+          infoWindow.open($scope.map, marker);
+      });
+
+    });
+
+  }, function(error){
+    console.log("Could not get location");
+  });
 
 })
 
@@ -57,19 +87,22 @@ angular.module('starter.controllers', [])
 
   $scope.registrar = function(Nombre, Apellido,Correo, contra, rcontra, fnac, Telefono, bobtoggle){
 
-          if(contra === rcontra){
-            $scope.usuario.Nombre = Nombre;
-            $scope.usuario.Apellido = Apellido;
-            $scope.usuario.Correo = Correo;
-            $scope.usuario.contra = contra;
-            $scope.usuario.fnac = fnac;
-            $scope.usuario.Telefono = Telefono;
-            $scope.usuario.bobtoggle = bobtoggle;
-            console.log("usuario");
+    if(contra === rcontra){
+      $scope.usuario.Nombre = Nombre;
+      $scope.usuario.Apellido = Apellido;
+      $scope.usuario.Correo = Correo;
+      $scope.usuario.contra = contra;
+      $scope.usuario.fnac = fnac;
+      $scope.usuario.Telefono = Telefono;
+      $scope.usuario.bobtoggle = bobtoggle;
+      console.log("usuario");
 
-          }else{
-            $scope.error = "No coinciden las conraseña";
-          }
+
+
+    }else{
+      $scope.error = "No coinciden las conraseña";
+    }
+
   }
 
 })

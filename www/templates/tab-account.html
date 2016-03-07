@@ -7,17 +7,17 @@
 
       <div class="item item-icon-left">
         <i class="icon ion-ios-person"></i>
-        {{ usuario.Nombre }} {{ usuario.Apellido }}
+        {{ usuario.nombre }} {{ usuario.apellido }}
       </div>
 
       <div class="item item-icon-left">
         <i class="icon ion-ios-telephone"></i>
-          {{ usuario.Telefono}}
+          {{ usuario.telefono}}
       </div>
 
       <div class="item item-icon-left" href="#">
         <i class="icon ion-ios-email"></i>
-        {{ usuario.Correo }}
+        {{ usuario.correo }}
       </div>
 
       <div class="item item-icon-left" href="#">
@@ -27,9 +27,7 @@
 
     </div>
 
-    <div>
-      <img src="img/maps.png" width="100%" height="auto">
-    </div>
+    <div id="map" data-tap-disabled="true"></div>
 
     <button class="button button-full button-assertive" ui-sref="login">
       Log Out

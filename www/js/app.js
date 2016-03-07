@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'backand'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -22,6 +22,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   });
 })
+
+.config(function (BackandProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
+      BackandProvider.setAppName('callbob');
+      BackandProvider.setSignUpToken('11f15581-be39-48c5-a142-82d771ef67bd');
+      BackandProvider.setAnonymousToken('fd88aa57-d831-43df-8a29-3793e99eee22');
+  })
 
 .config(function($stateProvider, $urlRouterProvider) {
 
