@@ -1,16 +1,31 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, $http) {
-  $http.get('http://mysafeinfo.com/api/data?list=teamlist_us&format=json').then(function(resp) {
+.controller('DashCtrl', function($scope, $http, DashServices) {
+
+  $http.get('https://api.backand.com:443/1/objects/Categorias').then(function(resp) {
     console.log('Success', resp);
     // For JSON responses, resp.data contains the result
-    $scope.subs=resp.data;
-    $scope.cats=resp.data;
-
+    $scope.cats=resp.data.data;
   }, function(err) {
     console.error('ERR', err);
     // err.status will contain the status code
   })
+  $scope.showSelectValue = function(mySelect) {
+    console.log(mySelect);
+    $http.get('https://api.backand.com/1/query/data/getSubCats?parameters='+
+    '%7B%22nomCat%22:%22'+mySelect+'%22%7D').then(function(resp) {
+
+      console.log('Success', resp);
+      // For JSON responses, resp.data contains the result
+      $scope.subs=resp.data;
+    }, function(err) {
+      console.error('ERR', err);
+      // err.status will contain the status code
+    })
+  }
+
+
+
 
 })
 
