@@ -6,17 +6,24 @@
 -->
 <ion-view view-title="Trabajos">
   <ion-content class="padding" style="background: url('img/fondo.png');">
-    <div ng-repeat="equipo in equipos">
+    <label class="item item-input item-select">
+      <div class="input-label">
+        BOB
+      </div>
+      <select ng-model="bobSelect" ng-change="showSelectValue(bobSelect)">
+          <option ng-repeat="BOB in BOBs">{{ BOB.idUsuario }}</option>
+      </select>
+    </label>
+    <div ng-repeat="Trabajo in Trabajos">
       <div class="list card">
         <div class="item item-avatar">
-
-          <h2 >{{ equipo.nm }}</h2>
-          <p>{{ equipo.lg }}-{{ equipo.con }}</p>
+          <h2>Solicitante: {{ Trabajo.idUsuario }}</h2>
         </div>
         <div class="item item-body">
-          <p>{{ equipo.stadium }}</p>
-          <p>{{ equipo.st }}</p>
-          <p>{{ equipo.div }}</p>
+          <p>Descripcion: {{ Trabajo.Descripcion }}</p>
+          <p>Categoria: {{ Trabajo.Categoria }}</p>
+          <p>SubCategoria: {{ Trabajo.Subcategoria }}</p>
+          <p>Ubicacion: {{ Trabajo.Ubicacion }}</p>
           <div class="row-fluid" style="text-align:center">
               <button class="button button-balanced"  style="margin-right: 40px;">Aceptar</button>
               <button class="button button-assertive">Rechazar</button>

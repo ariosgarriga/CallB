@@ -4,17 +4,15 @@ angular.module('starter.controllers', [])
 
   $http.get('https://api.backand.com:443/1/objects/Categorias').then(function(resp) {
     console.log('Success', resp);
-    // For JSON responses, resp.data contains the result
     $scope.cats=resp.data.data;
   }, function(err) {
     console.error('ERR', err);
-    // err.status will contain the status code
   })
+
   $scope.showSelectValue = function(mySelect) {
     console.log(mySelect);
     $http.get('https://api.backand.com/1/query/data/getSubCats?parameters='+
     '%7B%22nomCat%22:%22'+mySelect+'%22%7D').then(function(resp) {
-
       console.log('Success', resp);
       // For JSON responses, resp.data contains the result
       $scope.subs=resp.data;
@@ -24,25 +22,41 @@ angular.module('starter.controllers', [])
     })
   }
 
+  $scope.sendSolicitud = function(descripcion, catSelect, subcatSelect, ubicacion, usuario){
+    var usuario = {
+    	"Descripcion": descripcion,
+    	"Categoria": catSelect,
+    	"Subcategoria": subcatSelect,
+    	"Ubicacion": ubicacion,
+      "idUsuario": usuario
+    }
 
-
+    $http.post('https://api.backand.com:443/1/objects/Trabajos', usuario).then(function(resp) {
+      console.log('Success post Trabajo', resp);
+    }, function(err) {
+      console.error('ERR', err);
+    })
+  }
 
 })
 
 .controller('SolicitudCtrl', function($scope, $http) {
-  $http.get('http://mysafeinfo.com/api/data?list=teamlist_us&format=json').then(function(resp) {
-    console.log('Success', resp);
-    // For JSON responses, resp.data contains the result
-    $scope.equipos=resp.data;
+  $scope.actualizar = function(busqueda){
 
-  }, function(err) {
-    console.error('ERR', err);
-    // err.status will contain the status code
+    $http.get('https://api.backand.com/1/query/data/getSolicitudes?parameters='+
+    '%7B%22usuario%22:%22'+busqueda+'%22%7D').then(function(resp) {
+      console.log('Success', resp);
+      // For JSON responses, resp.data contains the result
+      $scope.Trabajos=resp.data;
 
-  })
+    }, function(err) {
+      console.error('ERR', err);
+      // err.status will contain the status code
+    })
+
+  }
 
 })
-
 
 .controller('AccountCtrl', function($scope, $http, $state, $cordovaGeolocation) {
   $http.get('https://api.backand.com:443/1/objects/usuarios/1').then(function(resp) {
@@ -50,7 +64,6 @@ angular.module('starter.controllers', [])
     // For JSON responses, resp.data contains the result
     $scope.usuario=resp.data;
     console.log(resp.data.data.id);
-
 
   }, function(err) {
     console.error('ERR', err);
@@ -97,22 +110,25 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('RegisterCtrl', function($scope) {
-  $scope.usuario = {Nombre:"", Apellido:"",Correo:"", contra:"", fnac:"", Telefono:"", bobtoggle: false};
+.controller('RegisterCtrl', function($scope, $http) {
 
   $scope.registrar = function(Nombre, Apellido,Correo, contra, rcontra, fnac, Telefono, bobtoggle){
 
     if(contra === rcontra){
-      $scope.usuario.Nombre = Nombre;
-      $scope.usuario.Apellido = Apellido;
-      $scope.usuario.Correo = Correo;
-      $scope.usuario.contra = contra;
-      $scope.usuario.fnac = fnac;
-      $scope.usuario.Telefono = Telefono;
-      $scope.usuario.bobtoggle = bobtoggle;
-      console.log("usuario");
-
-
+      var usuario = {
+        	"nombre": Nombre,
+        	"apellido": Apellido,
+        	"correo": Correo,
+        	"contrasena": contra,
+        	"telefono": Telefono,
+        	"fecha_nac": fnac,
+        	"verificado": bobtoggle
+        }
+      $http.post('https://api.backand.com:443/1/objects/usuarios', usuario).then(function(resp) {
+        console.log('Success post Trabajo', resp);
+      }, function(err) {
+        console.error('ERR', err);
+      })
 
     }else{
       $scope.error = "No coinciden las conraseña";
@@ -135,16 +151,27 @@ angular.module('starter.controllers', [])
 
 .controller('TrabajosCtrl', function($scope, $http) {
 
-  $http.get('http://mysafeinfo.com/api/data?list=teamlist_us&format=json').then(function(resp) {
+  $http.get('https://api.backand.com/1/query/data/getBOBs').then(function(resp) {
     console.log('Success', resp);
-    // For JSON responses, resp.data contains the result
-    $scope.equipos=resp.data;
-
+    $scope.BOBs=resp.data;
   }, function(err) {
     console.error('ERR', err);
-    // err.status will contain the status code
-
   })
+
+  $scope.showSelectValue = function(bob) {
+    $http.get('https://api.backand.com/1/query/data/getTrabajosBOB?parameters='+
+    '%7B%22nombreBOB%22:%22'+bob+'%22%7D').then(function(resp) {
+      console.log('Success jobs', resp);
+      // For JSON responses, resp.data contains the result
+      $scope.Trabajos=resp.data;
+
+    }, function(err) {
+      console.error('ERR', err);
+      // err.status will contain the status code
+
+    })
+  }
+
 
 })
 

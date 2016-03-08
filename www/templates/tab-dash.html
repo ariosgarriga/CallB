@@ -3,7 +3,7 @@
     <div class="list list-inset">
       <div class="item item-divider">Descripcion</div>
       <label class="item item-input">
-          <textarea placeholder="300"></textarea>
+          <textarea placeholder="300" ng-model="descripcion"></textarea>
       </label>
       <div class="item item-divider" height="5px"></div>
       <label class="item item-input item-select">
@@ -18,19 +18,23 @@
         <div class="input-label">
           Subcategoria
         </div>
-        <select>
+        <select ng-model="subcatSelect" ng-change="showSelectValue(subcatSelect)">
             <option ng-repeat="sub in subs">{{ sub.nombre }}</option>
         </select>
       </label>
       <label class="item item-input">
-          <textarea placeholder="Ubicacion"></textarea>
+          <textarea placeholder="Ubicacion" ng-model="ubicacion"></textarea>
+      </label>
+      <label class="item item-input">
+        <input type="text" placeholder="Carlos/Andres/..." ng-model="usuario">
       </label>
     </div>
 
     <div class="row-fluid">
         <a ui-sref="">
           <div style="text-align:center">
-            <img src="img/Logo.png" width="250px" height="auto">
+            <img src="img/Logo.png" width="250px" height="auto"
+            ng-click="sendSolicitud(descripcion, catSelect, subcatSelect, ubicacion, usuario)">
           </div>
         </a>
     </div>
