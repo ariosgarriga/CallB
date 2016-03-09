@@ -63,7 +63,6 @@ angular.module('starter.controllers', [])
     console.log('Success backand', resp);
     // For JSON responses, resp.data contains the result
     $scope.usuario=resp.data;
-    console.log(resp.data.data.id);
 
   }, function(err) {
     console.error('ERR', err);
