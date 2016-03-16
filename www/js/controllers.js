@@ -22,20 +22,23 @@ angular.module('starter.controllers', [])
     })
   }
 
-  $scope.sendSolicitud = function(descripcion, catSelect, subcatSelect, ubicacion, usuario){
+  $scope.sendSolicitud = function(descripcion, catSelect, subcatSelect, ubicacion){
     var usuario = {
     	"Descripcion": descripcion,
     	"Categoria": catSelect,
     	"Subcategoria": subcatSelect,
-    	"Ubicacion": ubicacion,
-      "idUsuario": usuario
+    	"Ubicacion": ubicacion
     }
 
-    $http.post('https://api.backand.com:443/1/objects/Trabajos', usuario).then(function(resp) {
+    $scope.data = { text: "Default text" };
+
+    $http.post('', usuario).then(function(resp) {
       console.log('Success post Trabajo', resp);
     }, function(err) {
       console.error('ERR', err);
     })
+
+
   }
 
 })
@@ -58,16 +61,20 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('AccountCtrl', function($scope, $http, $state, $cordovaGeolocation) {
+.controller('AccountCtrl', function($scope, $http, $state, $cordovaGeolocation, $cookieStore) {
+
+  console.log("Usuario: "+$cookieStore.get('Usuario'));
+  console.log("contra: "+$cookieStore.get('Contrasena'));
+
   $http.get('https://api.backand.com:443/1/objects/usuarios/1').then(function(resp) {
     console.log('Success backand', resp);
     // For JSON responses, resp.data contains the result
     $scope.usuario=resp.data;
 
+
   }, function(err) {
     console.error('ERR', err);
     // err.status will contain the status code
-
   })
 
 
@@ -109,9 +116,10 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('RegisterCtrl', function($scope, $http) {
+.controller('RegisterCtrl', function($scope, $http, $location) {
 
-  $scope.registrar = function(Nombre, Apellido,Correo, contra, rcontra, fnac, Telefono, bobtoggle){
+  $scope.registrar = function(Nombre, Apellido,Correo, contra, rcontra,
+    fnac, Telefono, bobtoggle, viewLogIn){
 
     if(contra === rcontra){
       var usuario = {
@@ -129,6 +137,8 @@ angular.module('starter.controllers', [])
         console.error('ERR', err);
       })
 
+      $location.path(view);
+
     }else{
       $scope.error = "No coinciden las conraseña";
     }
@@ -137,39 +147,28 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('LoginCtrl', function($scope) {
-  $scope.usuario = {Correo:"", contra:""}
+.controller('LoginCtrl', function($scope, $cookieStore, $location) {
 
-  $scope.validar = function(Correo, contra){
-    $scope.usuario.Correo = Correo;
-    $scope.usuario.contra = contra;
+  $scope.validar = function(Correo, contra, viewDash){
+    if(true){
+      $cookieStore.put('Usuario', Correo);
+      $cookieStore.put('Contrasena', contra);
+      $location.path(viewDash);
+    }else{
+      $scope.error = "Usuario o Contrasena Invalido";
+    }
+
+
+  }
+
+  $scope.CambiarAregistro = function(view){
+    $location.path(view);
   }
 
 
 })
 
 .controller('TrabajosCtrl', function($scope, $http) {
-
-  $http.get('https://api.backand.com/1/query/data/getBOBs').then(function(resp) {
-    console.log('Success', resp);
-    $scope.BOBs=resp.data;
-  }, function(err) {
-    console.error('ERR', err);
-  })
-
-  $scope.showSelectValue = function(bob) {
-    $http.get('https://api.backand.com/1/query/data/getTrabajosBOB?parameters='+
-    '%7B%22nombreBOB%22:%22'+bob+'%22%7D').then(function(resp) {
-      console.log('Success jobs', resp);
-      // For JSON responses, resp.data contains the result
-      $scope.Trabajos=resp.data;
-
-    }, function(err) {
-      console.error('ERR', err);
-      // err.status will contain the status code
-
-    })
-  }
 
 
 })

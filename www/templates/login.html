@@ -8,12 +8,13 @@
         <input type="password" placeholder="Password" ng-model="contra">
       </label>
     </div>
-    <button class="button button-full button-balanced" ui-sref="tab.dash"
-    ng-click="validar(Correo, contra)">
+    <button class="button button-full button-balanced"
+      ng-click="validar(Correo, contra, 'tab/dash')">
       Iniciar Sesion
     </button>
-    <button class="button button-clear button-energized" ui-sref="registrarse">
+    <button class="button button-clear button-energized" ng-click="CambiarAregistro('registrarse')">
       Registrarse
     </button>
+    <h2>{{ error }}</h2>
   </ion-content>
 </ion-view>

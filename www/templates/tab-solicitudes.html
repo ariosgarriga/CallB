@@ -1,14 +1,5 @@
 <ion-view view-title="Solicitudes">
   <ion-content style="background: url('img/fondo.png');">
-    <div class="bar bar-header item-input-inset">
-      <label class="item-input-wrapper">
-        <i class="icon ion-ios-search placeholder-icon"></i>
-        <input type="search" placeholder="Search" ng-model="busqueda">
-      </label>
-      <button class="button button-balanced" ng-click="actualizar(busqueda)">
-        Buscar
-      </button>
-    </div>
     <div ng-repeat="Trabajo in Trabajos">
       <div class="list card">
         <div class="item item-body">

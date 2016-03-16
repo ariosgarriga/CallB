@@ -3,7 +3,7 @@
     <div class="list list-inset">
       <div class="item item-divider">Descripcion</div>
       <label class="item item-input">
-          <textarea placeholder="300" ng-model="descripcion"></textarea>
+          <textarea placeholder="300" ng-model="data.text"></textarea>
       </label>
       <div class="item item-divider" height="5px"></div>
       <label class="item item-input item-select">
@@ -25,18 +25,13 @@
       <label class="item item-input">
           <textarea placeholder="Ubicacion" ng-model="ubicacion"></textarea>
       </label>
-      <label class="item item-input">
-        <input type="text" placeholder="Carlos/Andres/..." ng-model="usuario">
-      </label>
     </div>
 
     <div class="row-fluid">
-        <a ui-sref="">
-          <div style="text-align:center">
-            <img src="img/Logo.png" width="250px" height="auto"
-            ng-click="sendSolicitud(descripcion, catSelect, subcatSelect, ubicacion, usuario)">
-          </div>
-        </a>
+        <div style="text-align:center">
+          <img src="img/Logo.png" width="250px" height="auto"
+            ng-click="sendSolicitud(data.text, catSelect, subcatSelect, ubicacion)">
+        </div>
     </div>
   </ion-content>
 </ion-view>
