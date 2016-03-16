@@ -6,14 +6,6 @@
 -->
 <ion-view view-title="Trabajos">
   <ion-content class="padding" style="background: url('img/fondo.png');">
-    <label class="item item-input item-select">
-      <div class="input-label">
-        BOB
-      </div>
-      <select ng-model="bobSelect" ng-change="showSelectValue(bobSelect)">
-          <option ng-repeat="BOB in BOBs">{{ BOB.idUsuario }}</option>
-      </select>
-    </label>
     <div ng-repeat="Trabajo in Trabajos">
       <div class="list card">
         <div class="item item-avatar">
