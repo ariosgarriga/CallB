@@ -30,7 +30,7 @@ angular.module('starter.controllers', [])
     	"Ubicacion": ubicacion
     }
 
-    $scope.data = { text: "Default text" };
+    $scope.data = { text: "" };
 
     $http.post('', usuario).then(function(resp) {
       console.log('Success post Trabajo', resp);
@@ -63,20 +63,7 @@ angular.module('starter.controllers', [])
 
 .controller('AccountCtrl', function($scope, $http, $state, $cordovaGeolocation, $cookieStore) {
 
-  console.log("Usuario: "+$cookieStore.get('Usuario'));
-  console.log("contra: "+$cookieStore.get('Contrasena'));
-
-  $http.get('https://api.backand.com:443/1/objects/usuarios/1').then(function(resp) {
-    console.log('Success backand', resp);
-    // For JSON responses, resp.data contains the result
-    $scope.usuario=resp.data;
-
-
-  }, function(err) {
-    console.error('ERR', err);
-    // err.status will contain the status code
-  })
-
+    $scope.usuario = $cookieStore.get('Usuario')[0];
 
     var options = {timeout: 10000, enableHighAccuracy: true};
 
@@ -147,17 +134,34 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('LoginCtrl', function($scope, $cookieStore, $location) {
+.controller('LoginCtrl', function($scope, $cookieStore, $location, $http) {
 
   $scope.validar = function(Correo, contra, viewDash){
-    if(true){
-      $cookieStore.put('Usuario', Correo);
-      $cookieStore.put('Contrasena', contra);
-      $location.path(viewDash);
-    }else{
-      $scope.error = "Usuario o Contrasena Invalido";
-    }
 
+    var usuario;
+    var len = 0;
+    $http.get('https://api.backand.com/1/query/data/'+
+      'LogIn?parameters=%7B%22user%22:%22'+Correo+'%22,'+
+      '%22password%22:%22'+contra+'%22%7D').then(function(resp) {
+      console.log('Success Respuesta LogIn', resp);
+
+      usuario=resp.data;
+
+      console.log(JSON.stringify(usuario));
+
+      if(usuario.length === 1){
+
+        $cookieStore.put('Usuario', usuario);
+        console.log("Nombre usuario en coockie: "+$cookieStore.get('Usuario')[0].nombre);
+        $location.path(viewDash);
+
+      }else{
+        $scope.error = "Usuario o Contrasena Invalido";
+      }
+
+    }, function(err) {
+      console.error('ERR LogIn', err);
+    })
 
   }
 
@@ -169,7 +173,6 @@ angular.module('starter.controllers', [])
 })
 
 .controller('TrabajosCtrl', function($scope, $http) {
-
 
 })
 
