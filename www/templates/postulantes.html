@@ -1,0 +1,20 @@
+<ion-view view-title="Postulantes">
+  <ion-content style="background: url('img/fondo.png');">
+    <div ng-repeat="Postulante in Postulantes">
+      <div class="list card">
+        <div class="item item-body">
+          <p>Postulante: {{ Postulante.nombre }} {{ Postulante.apellido }}</p>
+          <button class="button button-full button-balanced"
+          ng-click="aceptarPostulado(Postulante.id)">
+            Aceptar
+          </button>
+
+          </div>
+        </div>
+      </div>
+      <div style="text-align: center;">
+        <h1>{{ error }}</h1>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

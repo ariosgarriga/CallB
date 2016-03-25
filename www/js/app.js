@@ -76,6 +76,15 @@ angular.module('starter', ['ionic', 'starter.controllers',
         }
       }
     })
+    .state('tab.postulantes', {
+        url: '/postulantes',
+        views: {
+          'tab-solicitudes': {
+            templateUrl: 'templates/postulantes.html',
+            controller: 'PostulanteCtrl'
+          }
+        }
+      })
 
 
   .state('tab.account', {

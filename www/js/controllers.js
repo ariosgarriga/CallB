@@ -63,11 +63,8 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('SolicitudCtrl', function($scope, $http, $cookieStore, $ionicPopup) {
+.controller('SolicitudCtrl', function($scope, $http, $cookieStore, $ionicPopup, $location) {
 
-  $scope.numPpostulados = 0;
-  $scope.MostrarPostu = true;
-  $scope.Aux= new Object();
 
 
     $http.get('https://api.backand.com/1/query/data/getSolicitudes?parameters='+
@@ -76,23 +73,6 @@ angular.module('starter.controllers', [])
       $scope.Solicitudes=resp.data;
 
 
-      for (var i = 0; i < $scope.Solicitudes.length; i++) {
-        $scope.Aux[i]=$scope.Solicitudes[i];
-
-        $http.get('https://api.backand.com/1/query/data/getPostulados?parameters='+
-        '%7B%22idTrabajo%22:%22'+$scope.Solicitudes[i].id+'%22%7D').then(function(resp) {
-          console.log('Success Postulados', resp);
-          $scope.Postulados=resp.data;
-          $scope.Aux[i].postulados=$scope.Postulados;
-
-
-        }, function(err) {
-          console.error('ERR', err);
-        })
-        $scope.Solicitudes[i]
-      }
-      console.log(JSON.stringify($scope.Solicitudes));
-
     }, function(err) {
       console.error('ERR', err);
     })
@@ -100,10 +80,11 @@ angular.module('starter.controllers', [])
 
 
 
+
     $scope.verPostulados = function(idTrabajo){
-
-      $scope.MostrarPostu = false;
-
+      $cookieStore.put('idTrabajo', idTrabajo);
+      console.log('En el coockie tengo '+$cookieStore.get('idTrabajo'));
+      $location.path('tab/postulantes');
     }
 })
 
@@ -344,6 +325,28 @@ angular.module('starter.controllers', [])
   }
 
 
+
+})
+
+.controller('PostulanteCtrl', function($scope, $http, $cookieStore, $ionicPopup) {
+
+  $http.get('https://api.backand.com/1/query/data/getPostulados?parameters='+
+  '%7B%22idTrabajo%22:%22'+$cookieStore.get('idTrabajo')+'%22%7D').then(function(resp) {
+   console.log('Success Postulados', resp);
+    $scope.Postulantes=resp.data;
+    console.log($scope.Postulantes.length);
+    if($scope.Postulantes.length==0){
+      $scope.error = "Nadie se ha postulado";
+    }
+
+  }, function(err) {
+    console.error('ERR', err);
+  })
+
+  $scope.aceptarPostulado = function(){
+
+
+  }
 
 })
 
