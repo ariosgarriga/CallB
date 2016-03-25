@@ -10,7 +10,7 @@
         <div class="input-label">
           Categoria
         </div>
-        <select ng-model="catSelect" ng-change="showSelectValue(catSelect)">
+        <select ng-model="catSelect" ng-change="showSelectValue(catSelect)" ng-click="ChangeSubs()">
           <option ng-repeat="cat in cats">{{ cat.name }}</option>
         </select>
       </label>
@@ -18,8 +18,8 @@
         <div class="input-label">
           Subcategoria
         </div>
-        <select ng-model="subcatSelect" ng-change="showSelectValue(subcatSelect)">
-            <option ng-repeat="sub in subs">{{ sub.nombre }}</option>
+        <select ng-model="subcatSelect" ng-change="showSelectSubValue(subcatSelect)">
+            <option ng-repeat="sub in subs">{{ sub.Nombre }}</option>
         </select>
       </label>
       <label class="item item-input">

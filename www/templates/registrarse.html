@@ -22,9 +22,38 @@
       <label class="item item-input">
         <input type="text" placeholder="telefono" ng-model="Telefono">
       </label>
-      <ion-toggle  ng-model="bobtoggle">
+      <ion-toggle  ng-model="bobtoggle" ng-click="HideBob()">
          BOB
       </ion-toggle>
+    </div>
+    <div ng-hide="BobSubs">
+      <p style="text-align: center">Seleccione las areas en las que esta dispuesto a ayudar</p>
+      <div class="item item-input item-select">
+           Categorias
+         <select ng-model="catSelect" ng-change="showSelectValue(catSelect)">
+           <option ng-repeat="cate in Cates">{{ cate.name }}</option>
+         </select>
+       </div>
+
+      <div class="list list-inset">
+        <li class="item item-checkbox  checkbox-royal" ng-repeat="sub in subs" ng-model="sub.selected">
+           {{sub.Nombre}}
+           <label class="checkbox">
+             <input
+              type="checkbox"
+              name="selectedSubs[]"
+              value="{{sub.Nombre}}"
+              ng-model="sub.selected"
+            >
+           </label>
+        </li>
+      </div>
+      <button class="button button-positive" ng-click="addSubs()"
+      style="font-size: 25px; border-radius: 50%; padding-bottom: 5px">
+      +
+      </button>
+    </div>
+
 
       <div>{{ error }}</div>
 

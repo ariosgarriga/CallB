@@ -1,12 +1,26 @@
 <ion-view view-title="Solicitudes">
   <ion-content style="background: url('img/fondo.png');">
-    <div ng-repeat="Trabajo in Trabajos">
+    <div ng-repeat="Solicitud in Solicitudes">
       <div class="list card">
         <div class="item item-body">
-          <p>Descripcion: {{ Trabajo.Descripcion }}</p>
-          <p>Categoria: {{ Trabajo.Categoria }}</p>
-          <p>SubCategoria: {{ Trabajo.Subcategoria }}</p>
-          <p>Ubicacion: {{ Trabajo.Ubicacion }}</p>
+          <p>Descripcion: {{ Solicitud.Descripcion }}</p>
+          <p>Categoria: {{ Solicitud.nombre }}</p>
+          <p>Ubicacion: {{ Solicitud.Ubicacion }}</p>
+          <a class="item item-icon-left" ng-click="verPostulados(Solicitud.id)">
+            <i class="icon ion-person-stalker"></i>
+            Postulados
+            <span class="badge badge-assertive">{{numPpostulados}}</span>
+          </a>
+
+          <div class="list" >
+
+            <div class="item item-icon-right" ng-repeat="postulado in Postulados">
+              <p>{{postulado.nombre}} {{postulado.apellido}}</p>
+              <p>{{postulado.correo}}</p>
+              <i class="icon ion-checkmark-round"></i>
+            </div>
+
+          </div>
         </div>
       </div>
     </div>

@@ -98,6 +98,44 @@ angular.module('starter', ['ionic', 'starter.controllers',
     }
   })
 
+  .state('consu', {
+  url: '/consu',
+  abstract: true,
+  templateUrl: 'templates/consu.html'
+  })
+
+  .state('consu.dash', {
+    url: '/dash',
+    views: {
+      'tab-dash': {
+        templateUrl: 'templates/tab-dash.html',
+        controller: 'DashCtrl'
+      }
+    }
+  })
+
+  .state('consu.solicitudes', {
+      url: '/solicitudes',
+      views: {
+        'tab-solicitudes': {
+          templateUrl: 'templates/tab-solicitudes.html',
+          controller: 'SolicitudCtrl'
+        }
+      }
+    })
+
+
+  .state('consu.account', {
+    url: '/account',
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/tab-account.html',
+        controller: 'AccountCtrl'
+      }
+    }
+  })
+
+
   ;
 
 

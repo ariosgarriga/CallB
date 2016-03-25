@@ -9,16 +9,18 @@
     <div ng-repeat="Trabajo in Trabajos">
       <div class="list card">
         <div class="item item-avatar">
-          <h2>Solicitante: {{ Trabajo.idUsuario }}</h2>
+          <h2>Solicitante: {{ Trabajo.nombre1 }} {{Trabajo.apellido}}</h2>
+          <h1>{{ Trabajo.Correo }}</h1>
         </div>
         <div class="item item-body">
           <p>Descripcion: {{ Trabajo.Descripcion }}</p>
-          <p>Categoria: {{ Trabajo.Categoria }}</p>
-          <p>SubCategoria: {{ Trabajo.Subcategoria }}</p>
+          <p>Tipo: {{ Trabajo.nombre }}</p>
           <p>Ubicacion: {{ Trabajo.Ubicacion }}</p>
           <div class="row-fluid" style="text-align:center">
-              <button class="button button-balanced"  style="margin-right: 40px;">Aceptar</button>
-              <button class="button button-assertive">Rechazar</button>
+          <!--   <button class="button button-balanced"  style="margin-right: 40px;" ng-click="Aceptar()">Aceptar</button>
+            <button class="button button-assertive" ng-click="Rechazar()">Rechazar</button>-->
+            <button class="button button-full button-balanced"
+             ng-click="Aceptar(Trabajo.nombre1, Trabajo.apellido, Trabajo.id )">Aceptar</button>
           </div>
         </div>
       </div>
