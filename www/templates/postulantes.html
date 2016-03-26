@@ -5,7 +5,7 @@
         <div class="item item-body">
           <p>Postulante: {{ Postulante.nombre }} {{ Postulante.apellido }}</p>
           <button class="button button-full button-balanced"
-          ng-click="aceptarPostulado(Postulante.id)">
+          ng-click="aceptarPostulado(Postulante.PostulanteTrabajo, Postulante.UsuarioPostulante)">
             Aceptar
           </button>
 

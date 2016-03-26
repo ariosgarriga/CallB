@@ -65,14 +65,20 @@ angular.module('starter.controllers', [])
 
 .controller('SolicitudCtrl', function($scope, $http, $cookieStore, $ionicPopup, $location) {
 
-
+  $scope.Postulados = "Postulados";
 
     $http.get('https://api.backand.com/1/query/data/getSolicitudes?parameters='+
     '%7B%22idUser%22:%22'+$cookieStore.get('Usuario')[0].id+'%22%7D').then(function(resp) {
       console.log('Success', resp);
       $scope.Solicitudes=resp.data;
+    }, function(err) {
+      console.error('ERR', err);
+    })
 
-
+    $http.get('https://api.backand.com/1/query/data/getSolicitudesAceptadas?parameters=%7B%22idUser%22:%22'+
+    $cookieStore.get('Usuario')[0].id+'%22%7D').then(function(resp) {
+      console.log('Success', resp);
+      $scope.Aceptadas=resp.data;
     }, function(err) {
       console.error('ERR', err);
     })
@@ -286,14 +292,46 @@ angular.module('starter.controllers', [])
 
 .controller('TrabajosCtrl', function($scope, $http, $cookieStore, $ionicPopup) {
 
+
+
   $http.get('https://api.backand.com/1/query/data/getTrabajos?parameters='+
   '%7B%22idBOB%22:%22'+$cookieStore.get('Usuario')[0].id+'%22%7D').then(function(resp) {
     console.log('Success', resp);
     $scope.Trabajos=resp.data;
-    //console.log(JSON.stringify($scope.Trabajos));
+    if($scope.Trabajos.length==0){
+      $scope.error = "No hay mas trabajos disponibles";
+    }
   }, function(err) {
     console.error('ERR', err);
   })
+
+  $http.get('https://api.backand.com/1/query/data/getBOBPostulados?parameters=%7B%22idUser%22:%22'+
+  $cookieStore.get('Usuario')[0].id+'%22%7D').then(function(resp) {
+    console.log('Success', resp);
+    $scope.Jobs=resp.data;
+    if($scope.Jobs.length>0){
+      $scope.TEspera=false;
+    }else{
+      $scope.TEspera=true;
+    }
+
+  }, function(err) {
+    console.error('ERR', err);
+  })
+
+  $http.get('https://api.backand.com/1/query/data/getBOBAceptados?parameters=%7B%22idUser%22:%22'+
+  $cookieStore.get('Usuario')[0].id+'%22%7D').then(function(resp) {
+    console.log('Success', resp);
+    $scope.Aceptados=resp.data;
+    if($scope.Aceptados.length>0){
+      $scope.TAceptados=false;
+    }else{
+      $scope.TAceptados=true;
+    }
+  }, function(err) {
+    console.error('ERR', err);
+  })
+
 
   $scope.Aceptar = function(nombre, apellido, id){
 
@@ -334,6 +372,7 @@ angular.module('starter.controllers', [])
   '%7B%22idTrabajo%22:%22'+$cookieStore.get('idTrabajo')+'%22%7D').then(function(resp) {
    console.log('Success Postulados', resp);
     $scope.Postulantes=resp.data;
+    $cookieStore.put('Postulantes', resp.data);
     console.log($scope.Postulantes.length);
     if($scope.Postulantes.length==0){
       $scope.error = "Nadie se ha postulado";
@@ -343,7 +382,23 @@ angular.module('starter.controllers', [])
     console.error('ERR', err);
   })
 
-  $scope.aceptarPostulado = function(){
+  $scope.aceptarPostulado = function(idTrabajo, idSolicitante){
+
+    $http.get('https://api.backand.com:443/1/objects/Trabajos/'+idTrabajo).then(function(resp) {
+     console.log('Success Postulados', resp);
+
+     var Update = resp.data;
+     console.log(JSON.stringify(Update));
+
+     Update.Trabajador = idSolicitante;
+     Update.Aceptada = true;
+     console.log(JSON.stringify(Update));
+
+    }, function(err) {
+      console.error('ERR', err);
+    })
+
+
 
 
   }

@@ -1,16 +1,45 @@
-<!--
-  This template loads for the 'tab.friend-detail' state (app.js)
-  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
-  The FriendsCtrl pulls data from the Friends service (service.js)
-  The Friends service returns an array of friend data
--->
 <ion-view view-title="Trabajos">
   <ion-content class="padding" style="background: url('img/fondo.png');">
+    <div style="color: white ; font-size:25px; margin-bottom:20px;
+    text-align:center" ng-hide="TAceptados">Trabajos aceptados:</div>
+
+    <div ng-repeat="Aceptado in Aceptados">
+      <div class="list card">
+        <div class="item item-avatar" style="background: #00FF00;">
+          <img src="img/user.png">
+          <h2>Solicitante: {{ Aceptado.nombre1 }} {{Aceptado.apellido}}</h2>
+          <h2>Trabajo ID: {{ Aceptado.id }}</h2>
+          <h2>Descripcion: {{ Aceptado.Descripcion }}</h2>
+          <h2>Correo: {{ Aceptado.correo }}</h2>
+          <h2>Telefono: {{ Aceptado.telefono }}</h2>
+          <div style="text-align: center">CONTACTALO!</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="color: white ; font-size:25px; margin-bottom:20px;
+    text-align:center" ng-hide="TEspera">Trabajos en espera de aprobacion:</div>
+
+    <div ng-repeat="Job in Jobs">
+      <div class="list card">
+        <div class="item item-avatar" style="background: #FFFF00;">
+          <img src="img/user.png">
+          <h2>Solicitante: {{ Job.nombre }} {{Job.apellido}}</h2>
+          <h2>Trabajo ID: {{ Job.id }}</h2>
+          <p>Descripcion: {{ Job.Descripcion }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="color: white ; font-size:25px; margin-bottom:20px;
+    text-align:center">Trabajos Disponibles:</div>
+
     <div ng-repeat="Trabajo in Trabajos">
       <div class="list card">
         <div class="item item-avatar">
+          <img src="img/user.png">
           <h2>Solicitante: {{ Trabajo.nombre1 }} {{Trabajo.apellido}}</h2>
-          <h1>{{ Trabajo.Correo }}</h1>
+          <h2>Trabajo ID: {{ Trabajo.id }}</h2>
         </div>
         <div class="item item-body">
           <p>Descripcion: {{ Trabajo.Descripcion }}</p>
@@ -25,5 +54,6 @@
         </div>
       </div>
     </div>
+    <div style="text-align: center"><h1>{{error}}</h1></div>
   </ion-content>
 </ion-view>
