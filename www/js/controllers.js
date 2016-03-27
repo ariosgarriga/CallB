@@ -38,24 +38,27 @@ angular.module('starter.controllers', [])
      console.log(tarea.Categoria);
      console.log(tarea.owner);
 
-    $scope.data = { text: "" };
-
     $http.post('https://api.backand.com:443/1/objects/Trabajos', tarea).then(function(resp) {
       console.log('Success post Trabajo', resp);
+
+      var alertPopup = $ionicPopup.alert({
+        title: 'BIEN! :-)',
+        template: 'Tu solicitud se ha enviado correctmente'
+      });
+
+      alertPopup.then(function(res) {
+        console.log('Solicitud enviada y Reload');
+        location.reload();
+      });
+
     }, function(err) {
-      console.error('ERR', err);
+      console.error('ERR post trabajo', err);
     })
 
 
-     var alertPopup = $ionicPopup.alert({
-       title: 'BIEN! :-)',
-       template: 'Tu solicitud se ha enviado correctmente'
-     });
 
-     alertPopup.then(function(res) {
-       console.log('Solicitud enviada y Reload');
-       location.reload();
-     });
+
+
 
 
 
@@ -64,13 +67,18 @@ angular.module('starter.controllers', [])
 })
 
 .controller('SolicitudCtrl', function($scope, $http, $cookieStore, $ionicPopup, $location) {
-
+  $scope.SListas = true;
+  $scope.SAceptadas = true;
+  $scope.SEspera= true;
   $scope.Postulados = "Postulados";
 
     $http.get('https://api.backand.com/1/query/data/getSolicitudes?parameters='+
     '%7B%22idUser%22:%22'+$cookieStore.get('Usuario')[0].id+'%22%7D').then(function(resp) {
       console.log('Success', resp);
       $scope.Solicitudes=resp.data;
+        if ($scope.Solicitudes.length>0) {
+          $scope.SEspera= false;
+        }
     }, function(err) {
       console.error('ERR', err);
     })
@@ -79,19 +87,124 @@ angular.module('starter.controllers', [])
     $cookieStore.get('Usuario')[0].id+'%22%7D').then(function(resp) {
       console.log('Success', resp);
       $scope.Aceptadas=resp.data;
+      if ($scope.Aceptadas.length>0) {
+        $scope.SAceptadas= false;
+      }
     }, function(err) {
       console.error('ERR', err);
     })
 
-
-
-
+    $http.get('https://api.backand.com/1/query/data/getSolicitudesListas?parameters=%7B%22idUser%22:%22'+
+    $cookieStore.get('Usuario')[0].id+'%22%7D').then(function(resp) {
+      console.log('Success', resp);
+      $scope.Listas=resp.data;
+      if ($scope.Listas.length>0) {
+        $scope.SListas= false;
+      }
+    }, function(err) {
+      console.error('ERR', err);
+    })
 
     $scope.verPostulados = function(idTrabajo){
       $cookieStore.put('idTrabajo', idTrabajo);
       console.log('En el coockie tengo '+$cookieStore.get('idTrabajo'));
       $location.path('tab/postulantes');
     }
+
+    $scope.Actualizar = function(){
+      location.reload();
+    }
+
+
+
+
+
+    $scope.FinalizarTrabajo = function(idAceptada) {
+
+       $scope.data = {}
+       $scope.data.idAceptada = idAceptada;
+       var myPopup = $ionicPopup.show({
+          template: ' Puntuacion 1-5<input type="number" min="1" max="5" ng-model="data.PuntuacionBOB">'+
+          '<br>Comentario sobre el BOB:<textarea ng-model="data.comentarioBOB" > ',
+          title: 'Comentarios',
+          subTitle: 'Ingrese sus comentarios y puntuacion del BOB',
+          scope: $scope,
+          buttons: [{
+             text: '<b>Finalizar</b>',
+             type: 'button-positive button-full',
+             onTap: function(e) {
+                   return $scope.data;
+             }
+          } ]
+       });
+
+       myPopup.then(function(res) {
+
+         $http.get('https://api.backand.com:443/1/objects/Trabajos/'+res.idAceptada).success(function(data) {
+           console.log('Success DoneConsumidor', data);
+            var Update = data;
+             console.log(JSON.stringify(Update));
+             Update.DoneConsumidor = true;
+             console.log(JSON.stringify(Update));
+
+             $http.put('https://api.backand.com:443/1/objects/Trabajos/'+res.idAceptada, Update).success(function(data) {
+                console.log('Success put Update', data);
+              })
+              .error(function(data) {
+                  console.log('Error: put update' + data);
+              });
+        })
+        .error(function(data) {
+            console.log('Error: dondeconsumidor' + data);
+        });
+
+
+
+        $http.get('https://api.backand.com/1/query/data/getResena?parameters=%7B%22idTrabajo%22:%22'+
+        res.idAceptada+'%22%7D').success(function(data) {
+          console.log('Success getResena', data);
+          if(data.length>0){
+            var Resena = data[0];
+            Resena.Calificacion_B = res.PuntuacionBOB;
+            Resena.Comentario_B = res.comentarioBOB;
+
+            $http.put('https://api.backand.com:443/1/objects/Resena/'+Resena.id, Resena).success(function(data) {
+               console.log('Success put Resena', data);
+             })
+             .error(function(data) {
+                 console.log('Error: put update' + data);
+             });
+
+          }else{
+
+            var Resena={
+             "Calificacion_C":  null,
+             "Comentario_C": null,
+             "Comentario_B": res.comentarioBOB,
+             "Calificacion_B": res.PuntuacionBOB,
+             "ResenaTrabajo": res.idAceptada
+            }
+
+            $http.post('https://api.backand.com:443/1/objects/Resena', Resena).success(function(data) {
+               console.log('Success POsT Resena', data);
+             })
+             .error(function(data) {
+                 console.error('Error: Post update' + data);
+             });
+
+          }
+       })
+       .error(function(data) {
+           console.error('Error: getResena' + data);
+           var Resena
+       });
+
+
+
+       });
+   };
+
+
 })
 
 .controller('AccountCtrl', function($scope, $http, $state, $cordovaGeolocation, $cookieStore) {
@@ -292,7 +405,9 @@ angular.module('starter.controllers', [])
 
 .controller('TrabajosCtrl', function($scope, $http, $cookieStore, $ionicPopup) {
 
-
+  $scope.Actualizar = function(){
+    location.reload();
+  }
 
   $http.get('https://api.backand.com/1/query/data/getTrabajos?parameters='+
   '%7B%22idBOB%22:%22'+$cookieStore.get('Usuario')[0].id+'%22%7D').then(function(resp) {
@@ -332,6 +447,19 @@ angular.module('starter.controllers', [])
     console.error('ERR', err);
   })
 
+  $http.get('https://api.backand.com/1/query/data/getBOBListos?parameters=%7B%22idUser%22:%22'+
+  $cookieStore.get('Usuario')[0].id+'%22%7D').then(function(resp) {
+    console.log('Success', resp);
+    $scope.Listos=resp.data;
+    if($scope.Listos.length>0){
+      $scope.TListos=false;
+    }else{
+      $scope.TListos=true;
+    }
+  }, function(err) {
+    console.error('ERR', err);
+  })
+
 
   $scope.Aceptar = function(nombre, apellido, id){
 
@@ -362,11 +490,91 @@ angular.module('starter.controllers', [])
 
   }
 
+  $scope.FinalizarTrabajo = function(idAceptada) {
+
+     $scope.data = {}
+     $scope.data.idAceptada = idAceptada;
+     var myPopup = $ionicPopup.show({
+        template: ' Puntuacion 1-5<input type="number" min="1" max="5" ng-model="data.PuntuacionCliente">'+
+        '<br>Comentario sobre el Cliente:<textarea ng-model="data.comentarioCliente" > ',
+        title: 'Comentarios',
+        subTitle: 'Ingrese sus comentarios y puntuacion del Cliente',
+        scope: $scope,
+        buttons: [{
+           text: '<b>Finalizar</b>',
+           type: 'button-positive button-full',
+           onTap: function(e) {
+                 return $scope.data;
+           }
+        } ]
+     });
+
+     myPopup.then(function(res) {
+
+       $http.get('https://api.backand.com:443/1/objects/Trabajos/'+res.idAceptada).success(function(data) {
+         console.log('Success DoneConsumidor', data);
+          var Update = data;
+
+           Update.DoneBOB = true;
+
+           $http.put('https://api.backand.com:443/1/objects/Trabajos/'+res.idAceptada, Update).success(function(data) {
+              console.log('Success put Update', data);
+            })
+            .error(function(data) {
+                console.log('Error: put update' + data);
+            });
+      })
+      .error(function(data) {
+          console.log('Error: dondeconsumidor' + data);
+      });
+
+      $http.get('https://api.backand.com/1/query/data/getResena?parameters=%7B%22idTrabajo%22:%22'+
+      res.idAceptada+'%22%7D').success(function(data) {
+        console.log('Success getResena', data);
+        if(data.length>0){
+          var Resena = data[0];
+          Resena.Calificacion_C = res.PuntuacionCliente;
+          Resena.Comentario_C = res.comentarioCliente;
+
+          $http.put('https://api.backand.com:443/1/objects/Resena/'+Resena.id, Resena).success(function(data) {
+             console.log('Success put Resena', data);
+           })
+           .error(function(data) {
+               console.log('Error: put update' + data);
+           });
+        }else{
+          var Resena={
+          	"Calificacion_C":  res.PuntuacionCliente,
+          	"Comentario_C": res.comentarioCliente,
+          	"Comentario_B": null,
+          	"Calificacion_B": null,
+          	"ResenaTrabajo": res.idAceptada
+          }
+
+          $http.post('https://api.backand.com:443/1/objects/Resena', Resena).success(function(data) {
+             console.log('Success POsT Resena', data);
+           })
+           .error(function(data) {
+               console.error('Error: Post update' + data);
+           });
+
+        }
+     })
+     .error(function(data) {
+         console.error('Error: getResena' + data);
+         var Resena
+     });
+
+
+
+
+     });
+  };
 
 
 })
 
-.controller('PostulanteCtrl', function($scope, $http, $cookieStore, $ionicPopup) {
+.controller('PostulanteCtrl', function($scope, $http, $cookieStore, $ionicPopup, $location) {
 
   $http.get('https://api.backand.com/1/query/data/getPostulados?parameters='+
   '%7B%22idTrabajo%22:%22'+$cookieStore.get('idTrabajo')+'%22%7D').then(function(resp) {
@@ -388,11 +596,19 @@ angular.module('starter.controllers', [])
      console.log('Success Postulados', resp);
 
      var Update = resp.data;
-     console.log(JSON.stringify(Update));
+     //console.log(JSON.stringify(Update));
 
      Update.Trabajador = idSolicitante;
      Update.Aceptada = true;
-     console.log(JSON.stringify(Update));
+
+       $http.put('https://api.backand.com:443/1/objects/Trabajos/'+idTrabajo, Update).then(function(resp) {
+        console.log('Success PUT', resp);
+        history.back();
+       }, function(err) {
+         console.error('ERR', err);
+       })
+
+
 
     }, function(err) {
       console.error('ERR', err);

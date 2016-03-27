@@ -1,20 +1,62 @@
 <ion-view view-title="Solicitudes">
   <ion-content style="background: url('img/fondo.png');">
-    <div ng-repeat="Aceptada in Aceptadas">
+    <button class="button button-full button-large
+     icon-center ion-arrow-up-c button-dark" ng-click="Actualizar()">
+     Actualizar
+    </button>
+
+    <button class="button button-full button-large
+     icon-center ion-checkmark-round button-calm" ng-hide="SListas">
+     Solicitudes Listas:
+    </button>
+
+    <div ng-repeat="Lista in Listas">
       <div class="list card">
         <div class="item item-body" style="background: #00FF00">
 
-          <p>Descripcion: {{ Aceptada.Descripcion }}</p>
-          <p>Categoria: {{ Aceptada.nombre }}</p>
-          <p>Ubicacion: {{ Aceptada.Ubicacion }}</p>
+          <p>Descripcion: {{ Lista.Descripcion }}</p>
+          <p>Categoria: {{ Lista.nombre }}</p>
+          <p>Ubicacion: {{ Lista.Ubicacion }}</p>
           <a class="item item-icon-left" ng-click="verPostulados(Solicitud.id)">
             <i class="icon ion-hammer"></i>
-            BOB: {{Aceptada.nombre1}} {{Aceptada.apellido}}
+            BOB: {{Lista.nombre1}} {{Lista.apellido}}
           </a>
 
         </div>
       </div>
     </div>
+
+    <button class="button button-full button-large
+     icon-center ion-log-in button-calm" ng-hide="SAceptadas">
+     Solicitudes en progreso:
+    </button>
+
+    <div ng-repeat="Aceptada in Aceptadas">
+      <div class="list card">
+        <div class="item item-body" style="background: #FFFF00">
+          <h2>ID: {{Aceptada.id}}</h2>
+          <p>Descripcion: {{ Aceptada.Descripcion }}</p>
+          <p>Categoria: {{ Aceptada.nombre }}</p>
+          <p>Ubicacion: {{ Aceptada.Ubicacion }}</p>
+          <a class="item item-icon-left">
+            <i class="icon ion-hammer"></i>
+            BOB: {{Aceptada.nombre1}} {{Aceptada.apellido}}
+          </a>
+          <a class="item item-icon-left item-icon-right stable"
+          style="background: #ef473a" ng-click="FinalizarTrabajo(Aceptada.id)">
+            <i class="icon ion-bookmark"></i>
+            Finalizar
+            <i class="icon ion-happy-outline"></i>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <button class="button button-full button-large
+     icon-center ion-settings button-calm" ng-hide="SEspera">
+     Solicitudes en espera:
+    </button>
 
     <div ng-repeat="Solicitud in Solicitudes">
       <div class="list card">

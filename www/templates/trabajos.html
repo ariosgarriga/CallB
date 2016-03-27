@@ -1,7 +1,26 @@
 <ion-view view-title="Trabajos">
-  <ion-content class="padding" style="background: url('img/fondo.png');">
-    <div style="color: white ; font-size:25px; margin-bottom:20px;
-    text-align:center" ng-hide="TAceptados">Trabajos aceptados:</div>
+  <ion-content  style="background: url('img/fondo.png');">
+    <button class="button button-full button-large
+     icon-center ion-arrow-up-c button-dark" ng-click="Actualizar()">
+     Actualizar
+    </button>
+
+    <button class="button button-full button-large button-calm" ng-hide="TListos">
+     Trabajos Listos
+    </button>
+    <div ng-repeat="Listo in Listos">
+      <div class="list card">
+        <div class="item item-avatar" style="background: #ff0066;">
+          <img src="img/user.png">
+          <h2>Solicitante: {{ Listo.nombre1 }} {{Listo.apellido}}</h2>
+          <h2>Trabajo ID: {{ Listo.id }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <button class="button button-full button-large button-calm" ng-hide="TAceptados">
+     Trabajos aceptados
+    </button>
 
     <div ng-repeat="Aceptado in Aceptados">
       <div class="list card">
@@ -9,30 +28,42 @@
           <img src="img/user.png">
           <h2>Solicitante: {{ Aceptado.nombre1 }} {{Aceptado.apellido}}</h2>
           <h2>Trabajo ID: {{ Aceptado.id }}</h2>
-          <h2>Descripcion: {{ Aceptado.Descripcion }}</h2>
+          <h2>Descripcion:</h2>
+          <p> {{ Aceptado.Descripcion }}</p>
           <h2>Correo: {{ Aceptado.correo }}</h2>
           <h2>Telefono: {{ Aceptado.telefono }}</h2>
           <div style="text-align: center">CONTACTALO!</div>
+
+        </div>
+        <div class="item item-body" style="padding:0px">
+          <a class="item item-icon-left item-icon-right stable"
+          style="background: #ef473a" ng-click="FinalizarTrabajo(Aceptado.id)">
+            <i class="icon ion-bookmark"></i>
+            Finalizar
+            <i class="icon ion-happy-outline"></i>
+          </a>
         </div>
       </div>
     </div>
 
-    <div style="color: white ; font-size:25px; margin-bottom:20px;
-    text-align:center" ng-hide="TEspera">Trabajos en espera de aprobacion:</div>
+    <button class="button button-full button-large button-calm" ng-hide="TEspera">
+      Trabajos en espera de aprobacion
+    </button>
 
     <div ng-repeat="Job in Jobs">
       <div class="list card">
-        <div class="item item-avatar" style="background: #FFFF00;">
-          <img src="img/user.png">
+        <div class="item item-body" style="background: #FFFF00;">
           <h2>Solicitante: {{ Job.nombre }} {{Job.apellido}}</h2>
           <h2>Trabajo ID: {{ Job.id }}</h2>
-          <p>Descripcion: {{ Job.Descripcion }}</p>
+          <h2>Descripcion:</h2>
+          <p> {{ Job.Descripcion }}</p>
         </div>
       </div>
     </div>
 
-    <div style="color: white ; font-size:25px; margin-bottom:20px;
-    text-align:center">Trabajos Disponibles:</div>
+    <button class="button button-full button-large button-calm">
+      Trabajos Disponibles
+    </button>
 
     <div ng-repeat="Trabajo in Trabajos">
       <div class="list card">
