@@ -21,13 +21,62 @@
       </div>
 
       <div class="item item-icon-left" href="#">
-        <i class="icon ion-map"></i>
-        Ubicacion
+        <i class="icon ion-star"></i>
+        Puntuacion como Cliente
+      </div>
+      <div class="item" style="text-align:center">
+          {{CaliCliente}}/5
+      </div>
+      <div ng-hide="CalificacionBOB">
+        <div class="item item-icon-left" href="#">
+          <i class="icon ion-star"></i>
+          Puntuacion como BOB
+        </div>
+        <div class="item" style="text-align:center" ng-hide="PuntuacionCliente">
+            {{CaliBOB}}/5
+        </div>
       </div>
 
     </div>
 
-    <div id="map" data-tap-disabled="true"></div>
+    <div class="list">
+      <div class="item item-divider">
+        Comentarios Como Cliente
+      </div>
+      <div class="item" ng-hide="errorComentCliente">
+          No hay Comentarios disponibles
+      </div>
+      <div ng-repeat="ComentarioCliente in ComentariosCliente">
+        <div  ng-hide="ComenBOB">
+          <div class="item">
+              <p>"{{ ComentarioCliente.Comentario_C}}"</p>
+              <div style="text-align: right">
+                Puntuacion: {{ ComentarioCliente.Calificacion_C }}/5
+              </div>
+          </div>
+        </div>
+      </div>
+      <div ng-hide="ComenBOB">
+        <div class="item item-divider">
+          Comentarios Como BOB
+        </div>
+        <div class="item" ng-hide="errorComentBOB">
+            No hay Comentarios disponibles
+        </div>
+        <div ng-repeat="ComentarioBOB in ComentariosBOB">
+          <div>
+            <div class="item">
+                "{{ ComentarioBOB.Comentario_B}}"
+                <div style="text-align: right">
+                  Puntuacion: {{ ComentarioBOB.Calificacion_B }}/5
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!--  <div id="map" data-tap-disabled="true"></div>-->
 
     <button class="button button-full button-assertive" ui-sref="login">
       Log Out

@@ -70,6 +70,7 @@ angular.module('starter.controllers', [])
   $scope.SListas = true;
   $scope.SAceptadas = true;
   $scope.SEspera= true;
+  $scope.SListas= true;
   $scope.Postulados = "Postulados";
 
     $http.get('https://api.backand.com/1/query/data/getSolicitudes?parameters='+
@@ -143,9 +144,7 @@ angular.module('starter.controllers', [])
          $http.get('https://api.backand.com:443/1/objects/Trabajos/'+res.idAceptada).success(function(data) {
            console.log('Success DoneConsumidor', data);
             var Update = data;
-             console.log(JSON.stringify(Update));
              Update.DoneConsumidor = true;
-             console.log(JSON.stringify(Update));
 
              $http.put('https://api.backand.com:443/1/objects/Trabajos/'+res.idAceptada, Update).success(function(data) {
                 console.log('Success put Update', data);
@@ -209,9 +208,61 @@ angular.module('starter.controllers', [])
 
 .controller('AccountCtrl', function($scope, $http, $state, $cordovaGeolocation, $cookieStore) {
 
+
     $scope.usuario = $cookieStore.get('Usuario')[0];
 
-    var options = {timeout: 10000, enableHighAccuracy: true};
+    $http.get('https://api.backand.com/1/query/data/getCommentsBOB?parameters='+
+    '%7B%22idUser%22:%22'+$scope.usuario.id+'%22%7D').then(function(resp) {
+      console.log('Success', resp);
+      $scope.ComentariosBOB=resp.data;
+
+      var aux = 0;
+      for (var i = 0; i < $scope.ComentariosBOB.length; i++) {
+        aux=aux+$scope.ComentariosBOB[i].Calificacion_B;
+      }
+
+
+
+      if($scope.ComentariosBOB.length>0){
+        $scope.errorComentBOB = true;
+        $scope.CaliBOB= (aux/$scope.ComentariosBOB.length).toFixed(0);
+      }else{
+        $scope.errorComentBOB = false;
+        $scope.CaliBOB = 0;
+      }
+
+      if($scope.usuario.verificado){
+        $scope.ComenBOB = false;
+      }else{
+        $scope.ComenBOB = true;
+      }
+    }, function(err) {
+      console.error('ERR', err);
+    })
+
+    $http.get('https://api.backand.com/1/query/data/getCommentsCliente?parameters='+
+    '%7B%22idUser%22:%22'+$scope.usuario.id+'%22%7D').then(function(resp) {
+      console.log('Success', resp);
+      $scope.ComentariosCliente=resp.data;
+
+      var aux = 0;
+      for (var i = 0; i < $scope.ComentariosCliente.length; i++) {
+        aux=aux+$scope.ComentariosCliente[i].Calificacion_C;
+      }
+
+
+      if($scope.ComentariosCliente.length>0){
+        $scope.errorComentCliente = true;
+        $scope.CaliCliente= (aux/$scope.ComentariosCliente.length).toFixed(0);
+      }else{
+        $scope.errorComentCliente = false;
+        $scope.CaliCliente=0;
+      }
+    }, function(err) {
+      console.error('ERR', err);
+    })
+
+/*    var options = {timeout: 10000, enableHighAccuracy: true};
 
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
 
@@ -245,7 +296,7 @@ angular.module('starter.controllers', [])
 
   }, function(error){
     console.log("Could not get location");
-  });
+  });*/
 
 })
 
